@@ -140,4 +140,5 @@ if __name__ == "__main__":
 
     logger.info('end')
     elapsed = (time.time() - start)
+    logger.info("Time used:", elapsed)
     print("Time used:", elapsed)

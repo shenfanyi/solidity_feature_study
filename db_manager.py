@@ -70,9 +70,9 @@ COLL_BYTE = DB_SOLCODE.COLL_BYTE
 # print DB_SOLCODE.COLL_URL.index_information()
 
 
-# DB_SOLCODE.COLL_URL.remove({})
-# DB_SOLCODE.COLL_SOL.remove({})
-# DB_SOLCODE.COLL_ABI.remove({})
+############ DB_SOLCODE.COLL_URL.remove({})
+############ DB_SOLCODE.COLL_SOL.remove({})
+############ DB_SOLCODE.COLL_ABI.remove({})
 
 
 # for i in COLL_URL.find().sort([("id",-1)]).limit(1):
