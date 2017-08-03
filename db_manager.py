@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: UTF-8 -*-
 
-
+import pymongo
 from pymongo import MongoClient
 import pprint
 
@@ -15,17 +15,59 @@ COLL_ABI = DB_SOLCODE.COLL_ABI
 COLL_BYTE = DB_SOLCODE.COLL_BYTE
 
 
+# COLL_URL.insert_one(
+#                     {
+#                         'id':5.0,
+#                         'url':'w'
+#                     }
+#                 )
+
+# id = 1
+# for i in ['z','a','o']:
+#     id += 1
+#     try:
+#         COLL_URL.insert_one(
+#             {
+#                 'id': 0,
+#                 'url': i
+#             }
+#         )
+#     except:
+#         continue
+#
+    # for n in range(10000000):
+    #     try:
+    #         COLL_URL.update_one(
+    #                 {'id':0},
+    #                 {'$set': {'id': id}}
+    #                             )
+    #     except :
+    #         id += 1
+    #         continue
+    #     else:
+    #         break
+
+    #
+    # COLL_URL.update_one(
+    #             {'id':1},
+    #             {'$set': {'id': 2}}
+    #                     )
+
+# except pymongo.errors.DuplicateKeyError:
+#     continue
+
+
 # DB_SOLCODE.COLL_URL.create_index([('id', pymongo.ASCENDING)],unique=True)
+# DB_SOLCODE.COLL_URL.create_index([('url', pymongo.TEXT)],unique=True)
 # DB_SOLCODE.COLL_SOL.create_index([('id', pymongo.ASCENDING)],unique=True)
 # DB_SOLCODE.COLL_ABI.create_index([('id', pymongo.ASCENDING)],unique=True)
 
 
 # DB_SOLCODE.COLL_URL.drop_index('id_1')
-# DB_SOLCODE.COLL_URL.drop_index('id_-1')
+# DB_SOLCODE.COLL_URL.drop_index('id_1_url_text')
 
 
-# for index in DB_SOLCODE.COLL_URL.list_indexes():
-#     print(index)
+# print DB_SOLCODE.COLL_URL.index_information()
 
 
 # DB_SOLCODE.COLL_URL.remove({})
@@ -33,15 +75,18 @@ COLL_BYTE = DB_SOLCODE.COLL_BYTE
 # DB_SOLCODE.COLL_ABI.remove({})
 
 
-# for i in COLL_URL.find({"id": 5}):
-for i in COLL_URL.find():
+# for i in COLL_URL.find().sort([("id",-1)]).limit(1):
+#     print i['id']
+
+for i in COLL_URL.find({"id": 555}):
+# for i in COLL_URL.find():
     pprint.pprint(i)
 
-# for i in COLL_SOL.find({"id": 5}):
-#     pprint.pprint(i)
-#
-# for i in COLL_ABI.find({"id": 5}):
-#     pprint.pprint(i)
+for i in COLL_SOL.find({"id": 555}):
+    pprint.pprint(i)
+
+for i in COLL_ABI.find({"id": 555}):
+    pprint.pprint(i)
 
 
 # pprint.pprint(COLL_URL.find_one())

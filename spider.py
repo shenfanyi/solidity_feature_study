@@ -6,6 +6,27 @@ import urllib2
 import re
 import urlparse
 from bs4 import BeautifulSoup
+import logging
+
+
+# create logger
+logger_name = "spider_logger"
+logger = logging.getLogger(logger_name)
+logger.setLevel(logging.DEBUG)
+
+# create file handler
+log_path = "./spider_log.log"
+fh = logging.FileHandler(log_path)
+fh.setLevel(logging.INFO)
+
+# create formatter
+fmt = "%(asctime)-15s %(levelname)s %(filename)s %(lineno)d %(process)d %(message)s"
+datefmt = "%a %d %b %Y %H:%M:%S"
+formatter = logging.Formatter(fmt, datefmt)
+
+# add handler and formatter to logger
+fh.setFormatter(formatter)
+logger.addHandler(fh)
 
 
 
@@ -35,33 +56,51 @@ def get_code_urls(source_url):
         'Accept-Language': 'en-US,en;q=0.8',
         'Connection': 'keep-alive'}
 
-    request = urllib2.Request(source_url, headers=hdr)
-    response = urllib2.urlopen(request)
-    # print response.getcode()
+    try:
+        request = urllib2.Request(source_url, headers=hdr)
+        # request = urllib2.Request(source_url)
 
-    html_doc = response.read()
-    soup = BeautifulSoup(html_doc, 'html.parser', from_encoding='utf-8')
-    # print soup1.prettify()
+        response = urllib2.urlopen(request)
+        # print response.getcode()
 
-    links = soup.find_all('a', href=re.compile(r"/address/(\w|\d)*"))
-    urls = list()
-    for link in links:
-        url = link['href']
-        urls.append(url)
-    urls = urls[:-2]
+    except urllib2.HTTPError, e:
+        logger.error('urllib2.HTTPError: %s\n' % (e.code))
+        return 2
 
-    code_urls = list()
-    for i in urls:
-        code_url = urlparse.urljoin('https://etherscan.io/address/', i)
-        code_url = urlparse.urljoin(code_url, '#code')
-        code_urls.append(code_url)
-    # print code_urls
+    except urllib2.URLError, e:
+        logger.error('urllib2.URLError: %s\n' % (e.reason))
+        return 2
 
-    return code_urls
+    except Exception as e:
+        logger.error('open exception: %s\n' %e)
+        return 2
+
+    else:
+        html_doc = response.read()
+        soup = BeautifulSoup(html_doc, 'html.parser', from_encoding='utf-8')
+        # print soup1.prettify()
+
+        links = soup.find_all('a', href=re.compile(r"/address/(\w|\d)*"))
+        urls = list()
+        for link in links:
+            url = link['href']
+            urls.append(url)
+        urls = urls[:-2]
+
+        code_urls = list()
+        for i in urls:
+            code_url = urlparse.urljoin('https://etherscan.io/address/', i)
+            code_url = urlparse.urljoin(code_url, '#code')
+            code_urls.append(code_url)
+        # print code_urls
+
+        return code_urls
+
 
 # #test
 # print get_code_urls('https://etherscan.io/accounts/c')
-
+# print get_code_urls('accounts/c')
+# print get_code_urls('https://aaaaaaaa')
 
 
 def get_codes(code_url):
@@ -74,24 +113,42 @@ def get_codes(code_url):
         'Accept-Language': 'en-US,en;q=0.8',
         'Connection': 'keep-alive'}
 
-    request = urllib2.Request(code_url, headers=hdr)
-    response = urllib2.urlopen(request)
-    # print response.getcode()
+    try:
+        request = urllib2.Request(code_url, headers=hdr)
+        response = urllib2.urlopen(request)
+        # print response.getcode()
 
-    html_doc = response.read()
-    soup1 = BeautifulSoup(html_doc, 'html.parser', from_encoding='utf-8')
 
-    sol_code = soup1.find_all('pre', id="editor")
-    # print str(sol_code[0])
-    soup2 = BeautifulSoup(str(sol_code[0]), 'html.parser', from_encoding='utf-8')
-    sol_code = soup2.get_text()
+    except urllib2.HTTPError, e:
+        logger.error('urllib2.HTTPError: %s\n' % (e.code))
+        return 2
 
-    abi_code = soup1.find_all('pre', id="js-copytextarea2")
-    # print str(abi_code[0])
-    soup3 = BeautifulSoup(str(abi_code[0]), 'html.parser', from_encoding='utf-8')
-    abi_code = soup3.get_text()
 
-    return {'sol_code':sol_code, 'abi_code':abi_code}
+    except urllib2.URLError, e:
+        logger.error('urllib2.URLError: %s\n' % (e.reason))
+        return 2
+
+
+    except Exception as e:
+        logger.error('open exception: %s\n' % e)
+        return 2
+
+    else:
+        html_doc = response.read()
+        soup1 = BeautifulSoup(html_doc, 'html.parser', from_encoding='utf-8')
+
+        sol_code = soup1.find_all('pre', id="editor")
+        # print str(sol_code[0])
+        soup2 = BeautifulSoup(str(sol_code[0]), 'html.parser', from_encoding='utf-8')
+        sol_code = soup2.get_text()
+
+        abi_code = soup1.find_all('pre', id="js-copytextarea2")
+        # print str(abi_code[0])
+        soup3 = BeautifulSoup(str(abi_code[0]), 'html.parser', from_encoding='utf-8')
+        abi_code = soup3.get_text()
+
+        return {'sol_code':sol_code, 'abi_code':abi_code}
+
 
 # #test
 # print get_codes('https://etherscan.io/address/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e#code')
