@@ -1,35 +1,18 @@
-Thu 03 Aug 2017 11:10:39 ERROR spider.py 75 1428 open exception: unknown url type: accounts/c
+Mon 21 Aug 2017 16:01:09 ERROR spider.py 122 9066 get_codes: urllib2.URLError: [SSL] ASN1 lib (_ssl.c:661)
 
-Thu 03 Aug 2017 11:13:36 ERROR spider.py 71 1619 urllib2.URLError: [Errno -2] Name or service not known
+Tue 22 Aug 2017 17:30:30 ERROR spider.py 120 19846 get_codes: urllib2.HTTPError: 302
 
-Thu 03 Aug 2017 11:14:10 ERROR spider.py 71 1637 urllib2.URLError: [Errno -2] Name or service not known
+Thu 24 Aug 2017 14:07:07 ERROR spider.py 124 9222 get_codes: urllib2.URLError: [Errno -3] Temporary failure in name resolution
 
-Thu 03 Aug 2017 11:22:36 INFO multi_processing.py 136 1894 begin
-Thu 03 Aug 2017 11:22:42 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83", : 1.0 }
+Thu 24 Aug 2017 16:48:57 ERROR spider.py 124 12590 get_codes: urllib2.URLError: EOF occurred in violation of protocol (_ssl.c:661)
 
-Thu 03 Aug 2017 11:22:46 ERROR multi_processing.py 95 1894 IndexError, code_url is unvailable!
-Thu 03 Aug 2017 11:22:55 ERROR multi_processing.py 95 1894 IndexError, code_url is unvailable!
-Thu 03 Aug 2017 11:23:00 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0xf1ce0a98efbfa3f8ebec2399847b7d88294a634e#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0xf1ce0a98efbfa3f8ebec2399847b7d88294a634", : 1.0 }
+Thu 24 Aug 2017 16:49:43 ERROR spider.py 124 12590 get_codes: urllib2.URLError: EOF occurred in violation of protocol (_ssl.c:661)
 
-Thu 03 Aug 2017 11:23:02 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0xf0160428a8552ac9bb7e050d90eeade4ddd52843#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0xf0160428a8552ac9bb7e050d90eeade4ddd52843", : 1.1 }
+Thu 24 Aug 2017 16:50:52 ERROR spider.py 124 12590 get_codes: urllib2.URLError: [Errno 104] Connection reset by peer
 
-Thu 03 Aug 2017 11:23:07 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0x3cfc056462a06d3d146a2c6e73e5a48ea3798f24#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0x3cfc056462a06d3d146a2c6e73e5a48ea3798f24", : 1.1 }
+Thu 24 Aug 2017 16:53:43 ERROR spider.py 124 12590 get_codes: urllib2.URLError: [Errno 104] Connection reset by peer
 
-Thu 03 Aug 2017 11:23:22 ERROR multi_processing.py 95 1894 IndexError, code_url is unvailable!
-Thu 03 Aug 2017 11:23:28 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0x900d0881a2e85a8e4076412ad1cefbe2d39c566c#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0x900d0881a2e85a8e4076412ad1cefbe2d39c566c", : 1.1 }
+Thu 24 Aug 2017 17:10:28 ERROR spider.py 124 13245 get_codes: urllib2.URLError: EOF occurred in violation of protocol (_ssl.c:661)
 
-Thu 03 Aug 2017 11:23:32 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0x7da82c7ab4771ff031b66538d2fb9b0b047f6cf9#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0x7da82c7ab4771ff031b66538d2fb9b0b047f6cf9", : 1.1 }
-
-Thu 03 Aug 2017 11:23:49 ERROR spider.py 133 1894 open exception: ''
-
-Thu 03 Aug 2017 11:23:52 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0xa646e29877d52b9e2de457eca09c724ff16d0a2b#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0xa646e29877d52b9e2de457eca09c724ff16d0a2b", : 1.1 }
-
-Thu 03 Aug 2017 11:23:54 ERROR multi_processing.py 106 1894 open exception: https://etherscan.io/address/0xcafe1a77e84698c83ca8931f54a755176ef75f2c#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0xcafe1a77e84698c83ca8931f54a755176ef75f2c", : 1.1 }
-
-Thu 03 Aug 2017 11:34:12 INFO multi_processing.py 136 2269 begin
-Thu 03 Aug 2017 11:34:21 ERROR multi_processing.py 106 2269 open exception: https://etherscan.io/address/0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e#code: E11000 duplicate key error collection: DB_SOLCODE.COLL_URL index: url_text dup key: { : "0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83", : 1.0 }
-
-Thu 03 Aug 2017 11:50:33 ERROR spider.py 128 2506 urllib2.URLError: EOF occurred in violation of protocol (_ssl.c:661)
-
-Thu 03 Aug 2017 12:39:06 ERROR spider.py 128 2506 urllib2.URLError: EOF occurred in violation of protocol (_ssl.c:661)
+Thu 24 Aug 2017 17:10:53 ERROR spider.py 128 13245 get_codes: open exception: ''
 

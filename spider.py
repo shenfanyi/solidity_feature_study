@@ -2,13 +2,20 @@
 # -*- coding: UTF-8 -*-
 
 
+
+# ----- import -----
 import urllib2
 import re
 import urlparse
 from bs4 import BeautifulSoup
 import logging
+from socket import error as SocketError
+import errno
+import time
 
 
+
+## ----- log -----
 # create logger
 logger_name = "spider_logger"
 logger = logging.getLogger(logger_name)
@@ -30,22 +37,7 @@ logger.addHandler(fh)
 
 
 
-def get_source_urls(n_pages):
-    # 1< n_pages < 400
-
-    source_urls = list()
-    n_pages += 1
-    for i in range(1, n_pages):
-        source_url = urlparse.urljoin('https://etherscan.io/accounts/c/', str(i))
-        source_urls.append(source_url)
-
-    return source_urls
-
-# #test
-# print get_source_urls(5)
-
-
-
+## ------ function -----
 def get_code_urls(source_url):
 
     hdr = {
@@ -64,16 +56,22 @@ def get_code_urls(source_url):
         # print response.getcode()
 
     except urllib2.HTTPError, e:
-        logger.error('urllib2.HTTPError: %s\n' % (e.code))
+        logger.error('get_code_urls: urllib2.HTTPError: %s\n' % (e.code))
         return 2
 
     except urllib2.URLError, e:
-        logger.error('urllib2.URLError: %s\n' % (e.reason))
+        logger.error('get_code_urls: urllib2.URLError: %s\n' % (e.reason))
         return 2
 
     except Exception as e:
-        logger.error('open exception: %s\n' %e)
+        logger.error('get_code_urls: open exception: %s\n' %e)
         return 2
+
+    except SocketError as e:
+        if e.errno == errno.ECONNRESET:
+            time.sleep(0.5)
+            logger.error('get_code_urls: SocketError ECONNRESET: %s\n' % e)
+            return 2
 
     else:
         html_doc = response.read()
@@ -96,11 +94,12 @@ def get_code_urls(source_url):
 
         return code_urls
 
-
 # #test
-# print get_code_urls('https://etherscan.io/accounts/c')
-# print get_code_urls('accounts/c')
-# print get_code_urls('https://aaaaaaaa')
+# if __name__ == "__main__":
+#     print get_code_urls('https://etherscan.io/accounts/c')
+#     # print get_code_urls('accounts/c')
+#     # print get_code_urls('https://aaaaaaaa')
+
 
 
 def get_codes(code_url):
@@ -116,38 +115,67 @@ def get_codes(code_url):
     try:
         request = urllib2.Request(code_url, headers=hdr)
         response = urllib2.urlopen(request)
-        # print response.getcode()
-
 
     except urllib2.HTTPError, e:
-        logger.error('urllib2.HTTPError: %s\n' % (e.code))
+        logger.error('get_codes: urllib2.HTTPError: %s\n' % (e.code))
         return 2
-
 
     except urllib2.URLError, e:
-        logger.error('urllib2.URLError: %s\n' % (e.reason))
+        logger.error('get_codes: urllib2.URLError: %s\n' % (e.reason))
         return 2
-
 
     except Exception as e:
-        logger.error('open exception: %s\n' % e)
+        logger.error('get_codes: open exception: %s\n' %e)
         return 2
+
+    except SocketError as e:
+        if e.errno == errno.ECONNRESET:
+            time.sleep(0.5)
+            logger.error('get_codes: SocketError ECONNRESET: %s\n' % e)
+            return 2
 
     else:
         html_doc = response.read()
-        soup1 = BeautifulSoup(html_doc, 'html.parser', from_encoding='utf-8')
+        soup = BeautifulSoup(html_doc, 'html.parser', from_encoding='utf-8')
 
-        sol_code = soup1.find_all('pre', id="editor")
-        # print str(sol_code[0])
-        soup2 = BeautifulSoup(str(sol_code[0]), 'html.parser', from_encoding='utf-8')
-        sol_code = soup2.get_text()
 
-        abi_code = soup1.find_all('pre', id="js-copytextarea2")
-        # print str(abi_code[0])
-        soup3 = BeautifulSoup(str(abi_code[0]), 'html.parser', from_encoding='utf-8')
-        abi_code = soup3.get_text()
+        num43_sol_code = soup.find_all('pre', class_="js-sourcecopyarea", id="editor")
+        num43_abi_code = soup.find_all('pre', class_="wordwrap", id="js-copytextarea2")
+        num43_byte_code = soup.find_all('div', id="verifiedbytecode2")
+        num4_bzzr = soup.find_all('pre', class_="wordwrap", style="margin-top: 5px; max-height: 100px")
+        num21_byte_code = soup.find_all('pre', class_="wordwrap", style="height: 15pc;")
+        num2_abi_code = soup.find_all('pre', class_="wordwrap", style = "height: 12pc;")
 
-        return {'sol_code':sol_code, 'abi_code':abi_code}
+        def droptag(text):
+            if text == []:
+                return []
+            else:
+                soup = BeautifulSoup(str(text[0]), 'html.parser', from_encoding='utf-8')
+                res = soup.get_text()
+                return res
+
+        num43_sol_code = droptag(num43_sol_code)
+        num43_abi_code = droptag(num43_abi_code)
+        num43_byte_code = droptag(num43_byte_code)
+        num4_bzzr = droptag(num4_bzzr)
+        num21_byte_code = droptag(num21_byte_code)
+        num2_abi_code = droptag(num2_abi_code)
+
+
+        if num4_bzzr != []:
+            res = {'sol_code': num43_sol_code, 'abi_code':num43_abi_code, 'byte_code':num43_byte_code, 'bzzr':num4_bzzr}
+        else:
+            if num2_abi_code != []:
+                res = {'abi_code':num2_abi_code, 'byte_code':num21_byte_code}
+            else:
+                if num21_byte_code != []:
+                    res = {'byte_code':num21_byte_code}
+                elif num43_sol_code!= [] and num43_abi_code!= [] and num43_byte_code!= []:
+                    res = {'sol_code': num43_sol_code, 'abi_code':num43_abi_code, 'byte_code':num43_byte_code}
+                else:
+                    res = []
+
+        return res
 
 
 # #test
