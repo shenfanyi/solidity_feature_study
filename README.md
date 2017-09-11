@@ -15,7 +15,7 @@
 
 ***2,search API***
 
-flask.py: open server
+search_API_flask.py: open server, must start mongoDB first
 
 usage: curl ip:port/search_content
 
