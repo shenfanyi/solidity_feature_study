@@ -17,9 +17,9 @@
 
 flask.py: open server
 
-usage: curl http://ip:port/search_content
+usage: curl ip:port/search_content
 
-example: curl http://10.8.47.33:5000/wallet
+example: curl 192.168.0.101:5000/wallet， curl 127.0.0.1:5000/wallet
 
 
 **return:** 
